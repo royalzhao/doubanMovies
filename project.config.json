@@ -10,7 +10,7 @@
 	"miniprogramRoot": "./dist/",
 	"compileType": "miniprogram",
 	"appid": "wx03c982a0e0a717e1",
-	"projectname": "recentmovie",
+	"projectname": "doubanmovies",
 	"condition": {
 		"search": {
 			"current": -1,
