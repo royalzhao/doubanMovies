@@ -9,7 +9,7 @@
 	},
 	"miniprogramRoot": "./dist/",
 	"compileType": "miniprogram",
-	"appid": "wx03c982a0e0a717e1",
+	"appid": "touristappid",
 	"projectname": "doubanmovies",
 	"condition": {
 		"search": {
