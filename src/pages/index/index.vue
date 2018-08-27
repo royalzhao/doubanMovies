@@ -1,64 +1,81 @@
 <template>
-  <div class="md-splash">
-    <swiper class="md-splash__swiper" indicator-dots>
-      <swiper-item class="md-splash__item" v-for="(item,index) in movies" :for-index="index" :key="item.id">
-        <image :src="item.images.large" class="md-splash__image" mode="aspectFill"></image>
-        <button class="md-splash__start" @click="handleStart" v-if="index === movies.length - 1">立即体验</button>
-      </swiper-item>
-    </swiper>
+    <div class="movie-show">
+      <div class="go-search" @click="goSearch">
+        <div class="logo">
+          <img src="./douban-logo.png" width="35" height="35">
+        </div>
+        <div class="search-content">
+          <span class="icon-search"></span>
+          <span>电影/影人/标签</span>
+        </div>
+      </div>
+      <switches :switches="switches" :currentIndex="currentIndex" @switch="switchItem"></switches>
+      <div class="list-wrapper">
+        <div v-show="currentIndex === 0">
+          <movielist></movielist>
+        </div>
+        <div v-show="currentIndex === 1">
+
+        </div>
+      </div>
   </div>
 </template>
 <script>
-  import { getStorage, setStorage } from '@/utils/wechat'
-  import { getBoardData } from '@/api/api'
-  const LAST_SPLASH_DATA = 'LAST_SPLASH_DATA'
-
-  export default {
+import Switches from '@/components/switch';
+import Movielist from '@/components/movie-list';
+export default {
     data(){
       return{
-        movies:[]
+        switches:[
+          {name:'正在热映'},
+          {name:'即将上映'}
+        ],
+        currentIndex:0
       }
     },
-    mounted() {
-      this.getInitData()
+    components:{
+      Switches,Movielist
     },
     methods:{
-      async getCache(){
-        try{
-          let res = await getStorage(LAST_SPLASH_DATA)
-          const {movies,expires} = res.data
-          // 有缓存，判断是否过期
-          if(movies && expires > Date.now()){
-            return res.data
-          }
+      switchItem(index){  //切换tab栏
+        this.currentIndex = index
 
-          // 已经过期
-          console.log("uncached")
-          return null
-        } catch (error){
-          return null
-        }
-      },
-      async getInitData(){
-        let cache = await this.getCache()
-        if(cache){
-          this.movies = cache.movies
-          return
-        }
-        let data = await getBoardData({board:'coming_soon',page:1,count:3})
-        this.movies = data.subjects
-        await setStorage(LAST_SPLASH_DATA,{
-          movies:data.subjects,
-          expires:Data.now()+1*24*60*60*1000
-        })
-      },
-
-      handleStart () {
-        // TODO: 访问历史的问题
-        wx.switchTab({
-          url: '../board/main'
-        })
       }
     }
-  }
+}
 </script>
+<style scoped lang="less">
+@import url("~@/styles/color.less");
+.movie-show{
+  height: 100%;
+    .go-search{
+      height: 50px;
+      box-sizing: border-box;
+      padding: 10px 10px 5px 60px;
+      text-align: center;
+      .logo{
+        position: absolute;
+        left: 10px;
+        img{
+          width:35px;
+          height: 35px;
+        }
+      }
+        
+      .search-content{
+        background-color: @color-background-d;
+        font-size: @font-size-medium-x;
+        line-height: 35px;
+        border-radius: 5px;
+        span{
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
+    }
+
+}
+      
+        
+          
+</style>
