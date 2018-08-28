@@ -61,7 +61,7 @@ export default {
 };
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="less">
 @import url("~@/styles/color.less");
 .star{
     font-size: 0;

@@ -12,17 +12,23 @@
       <switches :switches="switches" :currentIndex="currentIndex" @switch="switchItem"></switches>
       <div class="list-wrapper">
         <div v-show="currentIndex === 0">
-          <movielist></movielist>
+          <movielist :movies="hotMovies" :hasMore="hasMoreHotMovies"></movielist>
         </div>
         <div v-show="currentIndex === 1">
-
+          <movielist :movies="comingMovies" :hasMore="hasMoreComingMovies"></movielist>
         </div>
+        <loadmore :fullScreen="fullScreen"
+                v-show="currentIndex===1&&!comingMovies.length||currentIndex===0&&!hotMovies.length">
+        </loadmore>
       </div>
   </div>
 </template>
 <script>
 import Switches from '@/components/switch';
 import Movielist from '@/components/movie-list';
+import { getMovie } from '@/api/api'
+import { createMovieList } from '@/utils/movieList.js'
+import Loadmore from '@/components/loadmore';
 export default {
     data(){
       return{
@@ -30,18 +36,71 @@ export default {
           {name:'正在热映'},
           {name:'即将上映'}
         ],
-        currentIndex:0
+        currentIndex:0,
+        in_theaters:{
+          start:0,
+          count:10
+        },
+        coming_soon:{
+          start:0,
+          count:10
+        },
+        hotMovies:[],
+        hasMoreHotMovies:true,
+        comingMovies:[],
+        hasMoreComingMovies:true,
+        fullScreen: true, // 加载动画全屏
       }
     },
     components:{
       Switches,Movielist
     },
+    created() {
+      this.getMovies()
+    },
     methods:{
       switchItem(index){  //切换tab栏
         this.currentIndex = index
 
-      }
-    }
+      },
+      getMovies(){
+        if (this.currentIndex === 0) {
+          getMovie(this.in_theaters.start,this.in_theaters.count)
+            .then((response)=>{
+              this.in_theaters.start += this.in_theaters.count;
+              this.hotMovies = createMovieList(response.subjects);
+              this._checkMore(response); // 检查是否还存在更多数据
+            })
+        }else{
+          getComingMovie(this.coming_soon.start,this.coming_soon.count)
+            .then((response)=>{
+              this.coming_soon.start += this.coming_soon.count;
+              this.comingMovies.push(createMovieList(response.subjects));
+              this._checkMore(response); // 检查是否还存在更多数据
+            })
+        }
+        
+      },
+      _checkMore(data) {
+        const movies = data.subjects;
+        if (!movies.length || data.start + data.count > data.total) {
+          if (this.currentIndex === 0) {
+            this.hasMoreHotMovies = false;
+          } else {
+            this.hasMoreComingMovies = false;
+          }
+          //this.loadingFlag = true;
+        }
+      },
+    },
+    async onPullDownRefresh () { // 下拉刷新
+      await this.getMovies()
+      wx.stopPullDownRefresh()
+    },
+
+    onReachBottom () { // 上拉加载
+      this.getMovies()
+    },  
 }
 </script>
 <style scoped lang="less">

@@ -1,55 +1,92 @@
 <template>
   <div class="movie-list">
-    <div class="movie-item">
+    <div class="movie-item" v-for="(movie,index) in movies" :key="index" @click="selectItem(movie)">
       <div class="img">
-        <img src="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2529389608.jpg" alt="">
+        <img :src="movie.image" alt="">
       </div>
       <div class="content">
-        <h2 class="head">父子雄兵</h2>
-        <div class="">评分</div>
-        <div>导演</div>
-        <div>主演</div>
-        <div>11505人看过</div>
+        <h2 class="head">{{movie.title}}</h2>
+        <star :size="24" :score="movie.rating" :showScore="showScore"></star>
+        <div class="director">导演: {{movie.director}}</div>
+        <div class="casts">主演: {{movie.casts}}</div>
+        <div class="hasWacthed">{{movie.collectCount}}人看过</div>
       </div>
     </div>
+    <loadmore :hasMore="hasMore" v-show="movies.length"></loadmore>
   </div>
 </template>
 
 <script>
-  // import Star from '@/base/star/star';
-  // import Loadmore from '@/base/loadmore/loadmore';
+  import Star from '@/components/star/star';
+  import Loadmore from '@/components/loadmore';
 
   export default {
     props: {
-      
+      movies:{
+        type:Array,
+        default:[]
+      },
+      hasMore:{
+        type:Boolean,
+        default:true
+      }
     },
     data() {
       return {
         casts: [],
         showScore: true
-      };
+      }
     },
     created() {
      
     },
-    computed: {}
-   
+    computed: {},
+    components:{
+      Star,Loadmore
+    },
+    methods:{
+      selectItem(movie){
+        this.$emit('select',movie);
+      }
+    }
 }
 
 </script>
 <style lang="less" scoped>
+  @import url("~@/styles/color.less");
   .movie-list{
     .movie-item{
       margin: 10px;
       display:flex;
+      
       .img{
         img{
-          width:120px;
-          height: 160px;
+          width:80px;
+          height: 120px;
         }
       }
       .content{
-
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        overflow: hidden;
+        margin-left: 10px;
+        .head{
+          font-size: @font-size-medium-x;
+          color:@color-text-f;
+        }
+        .director{
+          font-size: @font-size-small;
+          color:@color-text ;
+        }
+        .casts{
+          font-size: @font-size-small;
+          color:@color-text ;
+        }
+        .hasWacthed{
+          color: @color-text-f;
+          font-size:@font-size-small;
+        }
       }
     }
   }
