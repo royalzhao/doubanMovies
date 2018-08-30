@@ -12,6 +12,7 @@ export default {
 </script>
 
 <style>
+@import url("~@/styles/font.less");
 .container {
   height: 100%;
   display: flex;

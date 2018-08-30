@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/main",
     "pages/rank/main",
-    "pages/me/main"
+    "pages/me/main",
+    "pages/movie_detail/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

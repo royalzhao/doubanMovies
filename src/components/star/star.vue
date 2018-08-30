@@ -1,6 +1,6 @@
 <template>
 <div class="star" :class="starType">
-    <span v-if="score || needNullStar" v-for="item in itemClasses" class="star-item" :class="item"></span>
+    <span v-if="score || needNullStar" v-for="item in itemClasses" :key="index" class="star-item" :class="item"></span>
     <span v-if="!score" class="no-score" :class="{'block':needNullStar}">暂无评分</span>
     <span v-if="showScore && score" class="show-score">{{normalizeScore}}</span>
 </div>

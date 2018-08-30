@@ -46,42 +46,45 @@ export default {
         top: 50%;
         width: 100%;
         transform: translateY(-50%);
-        .hasmore{
+    }
+    .hasmore{
+        height: 100%;
+        span{
+            display: inline-block;
+            width: 15px;
             height: 100%;
-            span{
-                display: inline-block;
-                width: 15px;
-                height: 100%;
-                margin-right: 5px;
-                background: lightgreen;
-                animation: load 1.04s ease infinite;
-                &:nth-child(1){
-                    animation-delay:0.13s;
-                }
+            margin-right: 5px;
+            background: lightgreen;
+            animation: load 1.04s ease infinite;
+            &:nth-child(1){
+                animation-delay:0.13s;
+            }
+        
+            &:nth-child(2){
+                animation-delay:0.26s;
+            }
             
-                &:nth-child(2){
-                    animation-delay:0.26s;
-                }
-                
-                &:nth-child(3){
-                    animation-delay:0.39s;
-                }
-                
-                &:nth-child(4){
-                    animation-delay:0.52s;
-                }
-                
-                &:nth-child(5){
-                    animation-delay:0.65s;
-                }
-                
-                &:last-child{
-                    margin-right: 0px;
-                }
+            &:nth-child(3){
+                animation-delay:0.39s;
+            }
+            
+            &:nth-child(4){
+                animation-delay:0.52s;
+            }
+            
+            &:nth-child(5){
+                animation-delay:0.65s;
+            }
+            
+            &:last-child{
+                margin-right: 0px;
             }
         }
     }
-
+    .nomore{
+        font-size: @font-size-medium;
+        color:@color-background-f;
+    }
 }
     
         
