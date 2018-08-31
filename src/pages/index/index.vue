@@ -72,7 +72,7 @@ export default {
       },
       selectMovie(movie) { // 转入电影详情
         wx.navigateTo({
-            url: `/pages/movie_detail/main?id=${movie.id}`
+            url: `/pages/movie_detail/main?id=${movie.id}&name=${movie.title}`
         })
       },
       getMovies(){

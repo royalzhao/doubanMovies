@@ -1,21 +1,20 @@
 <template>
     <div class="detail-wrapper">
-        <div class="fixed-title">
-            <span class="back" @click="back">
-                <i class="icon-back"></i>
-            </span>
-            <span class="type">
-                <span class="icon" v-show="!this.changeFix">
-                    <i class="icon-video-camera"></i>
-                    电影
-                </span>
-                <span v-if="changeFix" v-text="movieDetail.title" class="movie-name"></span>
-            </span>
+        <!-- 顶部海报 -->
+        <div class="head-img">
+            <div class="img">
+                <img :src="movieDetail.images.large" alt="">
+            </div>
         </div>
+        <!-- 影片详细信息 -->
+        <!-- <movie-info :movieDetail="movieDetail"></movie-info> -->
     </div>
 </template>
 <script>
     import { getMovieDetail } from '@/api/api'
+    import movieInfo from '@/components/movie-info'
+    import { mapState, mapActions, mapMutations } from 'vuex'
+    import { ITEM_CLEAR_MOVIE } from '@/store/mutations-type'
     export default {
         data(){
             return{
@@ -23,22 +22,51 @@
                 movieDetail: {},
                 fullScreen: true, // 用于loadmore组件全屏加载效果
                 switches: [
-                {name: '短评'},
-                {name: '影评'}
+                    {name: '短评'},
+                    {name: '影评'}
                 ],
                 currentIndex: 0,
             }
         },
-        created() {
+        onLoad: function (options) {
+            wx.setNavigationBarTitle({ title: options.name })      // options.name表示上个页面传过来的文字
+            wx.setNavigationBarColor({
+                frontColor: '#ffffff',
+                backgroundColor: '#555',
+                animation: {
+                    duration: 400,
+                    timingFunc: 'easeIn'
+                }
+            })
+        },
+        computed:{
+            ...mapState('item', {
+                movie: state => state.movie
+            })
+        },
+        mounted() {
             const id = this.$root.$mp.query.id;
-            console.log(id)
-            this._getDetail(id);      //获取电影详细信息
+            if (!id) {
+                return wx.navigateBack()
+            }
+            this.id = id
+            this.getMovieData(id);      //获取电影详细信息
         },  
         methods:{
+            ...mapActions('item', [
+                'getMovie'
+            ]),
+            ...mapMutations('item', {
+                clearMovie: ITEM_CLEAR_MOVIE
+            }),
             back(){
                 wx.navigateBack({
                     delta: 1
                 })
+            },
+            async getMovieData (id) {
+                await this.getMovie({ id })
+           
             },
             _getDetail(id){
                 console.log(id)
@@ -50,14 +78,34 @@
                 }else{
                     getMovieDetail(id).then((res)=>{ //获取电影详细
                         this.movieDetail = res;
-                        console.log(res)
+                        console.log(this.movieDetail)
                     })
                 }
                
             }
+        },
+        components:{
+            movieInfo
+        },
+        onUnload () {
+            this.clearMovie()
         }
     }
 </script>
 <style lang="less" scoped>
-
+@import url('~@/styles/color.less');
+.detail-wrapper{
+    .head-img{
+        width: 100%;
+        padding:20px 0;
+        background:@color-background-f;
+        .img{
+            text-align: center;
+            img{
+                width: 50%;
+                margin: 0 auto;
+            }
+        }
+    }
+}
 </style>
