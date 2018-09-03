@@ -12,6 +12,7 @@ const mutations = {
       state.movieDetails.unshift(data)
     }
     state.movie = data
+    console.log( state.movie)
   },
   [ITEM_CLEAR_MOVIE]: (state) => {
     state.movie = {}
@@ -29,6 +30,7 @@ const actions = {
       })
     }
     let movie = await getMovieDetail(id)
+    
     if (!movie) return
     commit(ITEM_MOVIE_DETAIL, {
       data: movie,

@@ -3,11 +3,15 @@
         <!-- 顶部海报 -->
         <div class="head-img">
             <div class="img">
-                <img :src="movieDetail.images.large" alt="">
+                <img v-if="movie.images"  :src="movie.images.large" alt="" />
             </div>
+           
         </div>
         <!-- 影片详细信息 -->
-        <!-- <movie-info :movieDetail="movieDetail"></movie-info> -->
+        <div v-if="movie.directors">
+            <movie-info :movieDetail="movie"></movie-info>
+        </div>
+        
     </div>
 </template>
 <script>
@@ -17,7 +21,7 @@
     import { ITEM_CLEAR_MOVIE } from '@/store/mutations-type'
     export default {
         data(){
-            return{
+            return {
                 id:null,
                 movieDetail: {},
                 fullScreen: true, // 用于loadmore组件全屏加载效果
@@ -28,30 +32,19 @@
                 currentIndex: 0,
             }
         },
-        onLoad: function (options) {
-            wx.setNavigationBarTitle({ title: options.name })      // options.name表示上个页面传过来的文字
-            wx.setNavigationBarColor({
-                frontColor: '#ffffff',
-                backgroundColor: '#555',
-                animation: {
-                    duration: 400,
-                    timingFunc: 'easeIn'
-                }
-            })
-        },
         computed:{
             ...mapState('item', {
                 movie: state => state.movie
             })
         },
-        mounted() {
+        mounted(){
             const id = this.$root.$mp.query.id;
             if (!id) {
                 return wx.navigateBack()
             }
             this.id = id
             this.getMovieData(id);      //获取电影详细信息
-        },  
+        },
         methods:{
             ...mapActions('item', [
                 'getMovie'
@@ -59,17 +52,24 @@
             ...mapMutations('item', {
                 clearMovie: ITEM_CLEAR_MOVIE
             }),
-            back(){
-                wx.navigateBack({
-                    delta: 1
-                })
-            },
-            async getMovieData (id) {
-                await this.getMovie({ id })
            
+            async getMovieData (id) {
+                await this.getMovie({ id });
+                wx.setNavigationBarTitle({ title: this.movie.title })      // options.name表示上个页面传过来的文字
+                wx.setNavigationBarColor({
+                    frontColor: '#ffffff',
+                    backgroundColor: '#555',
+                    animation: {
+                        duration: 400,
+                        timingFunc: 'easeIn'
+                    }
+                });
+                //this.movieDetail = this.movie.images.large
+                //console.log(this.movie.images.large)
+                //console.log(this.movieDetail.images.large)
             },
             _getDetail(id){
-                console.log(id)
+                //console.log(id)
                 if(!id){     //在当前页面刷新回到主页面
                     wx.navigateBack({
                         delta: 1
@@ -78,7 +78,7 @@
                 }else{
                     getMovieDetail(id).then((res)=>{ //获取电影详细
                         this.movieDetail = res;
-                        console.log(this.movieDetail)
+                        //console.log(this.movieDetail.images.large)
                     })
                 }
                

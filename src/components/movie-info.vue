@@ -23,7 +23,7 @@
             <div class="casts-content">
                 <h2 class="title">影人</h2>
                 <div class="cast-item" v-for="item in allCasts" :key="index">
-                    <img :src="item.avatart.large" alt="">
+                    <img v-if="item.avatart" :src="item.avatart.large" alt="">
                     <h3 class="item-title">{{item.name}}</h3>
                     <span v-if="item.isDirector">导演</span>
                 </div>

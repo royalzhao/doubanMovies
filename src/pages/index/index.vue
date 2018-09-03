@@ -57,7 +57,7 @@ export default {
     components:{
       Switches,Movielist,Loadmore
     },
-    created() {
+    mounted(){
       this.getMovies()
     },
     methods:{
