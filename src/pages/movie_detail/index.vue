@@ -12,11 +12,36 @@
             <movie-info :movieDetail="movie"></movie-info>
         </div>
         
+        <!-- 影片评论 -->
+        <div class="switch">
+            <switches :switches="switches" :currentIndex="currentIndex" @switch="switchItem"></switches>
+        </div>
+        <movie-comment
+            v-if="movie.popular_comments && currentIndex === 0"
+            :comments="movie.popular_comments"
+            :commentNum="movie.comments_count"
+            @needAllComments="needAllComments"
+        >
+        </movie-comment>
+        <movie-review
+            v-if="movie.popular_reviews && currentIndex === 1"
+            :reviews="movie.popular_reviews.slice(0,5)"
+            :reviewNum="movie.reviews_count"
+            @needAllComments="needAllReviews"
+            @selectReview="selectReview"
+        >
+        </movie-review>
+
+        <loadmore :fullScreen="fullScreen" v-if="!movie.images"></loadmore>
     </div>
 </template>
 <script>
     import { getMovieDetail } from '@/api/api'
     import movieInfo from '@/components/movie-info'
+    import Switches from '@/components/switch'
+    import movieComment from '@/components/movie-comment'
+    import MovieReview from '@/components/movie-review'
+    import loadmore from "@/components/loadmore"
     import { mapState, mapActions, mapMutations } from 'vuex'
     import { ITEM_CLEAR_MOVIE } from '@/store/mutations-type'
     export default {
@@ -52,7 +77,9 @@
             ...mapMutations('item', {
                 clearMovie: ITEM_CLEAR_MOVIE
             }),
-           
+           switchItem(index){
+                this.currentIndex = index;
+           },
             async getMovieData (id) {
                 await this.getMovie({ id });
                 wx.setNavigationBarTitle({ title: this.movie.title })      // options.name表示上个页面传过来的文字
@@ -68,24 +95,27 @@
                 //console.log(this.movie.images.large)
                 //console.log(this.movieDetail.images.large)
             },
-            _getDetail(id){
-                //console.log(id)
-                if(!id){     //在当前页面刷新回到主页面
-                    wx.navigateBack({
-                        delta: 1
-                    });
-                    return;
-                }else{
-                    getMovieDetail(id).then((res)=>{ //获取电影详细
-                        this.movieDetail = res;
-                        //console.log(this.movieDetail.images.large)
-                    })
-                }
+            // _getDetail(id){
+            //     //console.log(id)
+            //     if(!id){     //在当前页面刷新回到主页面
+            //         wx.navigateBack({
+            //             delta: 1
+            //         });
+            //         return;
+            //     }else{
+            //         getMovieDetail(id).then((res)=>{ //获取电影详细
+            //             this.movieDetail = res;
+            //             //console.log(this.movieDetail.images.large)
+            //         })
+            //     }
                
+            // }
+            needAllComments(){
+                
             }
         },
         components:{
-            movieInfo
+            movieInfo,Switches,movieComment,loadmore,MovieReview
         },
         onUnload () {
             this.clearMovie()

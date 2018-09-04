@@ -10,7 +10,7 @@
             </div>
             <div class="rank">
                 <span class="origin">豆瓣评分</span>
-                <span class="rating" v-if="rating">{{normallizeScore}}</span>
+                <span class="rating" v-if="rating">{{normalizeScore}}</span>
                 <star :size="24" :score="movieDetail.rating.average" :needNullStar="needNullStar"></star>
                 <span class="num" v-if="rating">{{movieDetail.ratings_count}}人</span>
             </div>
@@ -23,7 +23,7 @@
             <div class="casts-content">
                 <h2 class="title">影人</h2>
                 <div class="cast-item" v-for="item in allCasts" :key="index">
-                    <img v-if="item.avatart" :src="item.avatart.large" alt="">
+                    <img v-if="item.avatars" :src="item.avatars.large" alt="">
                     <h3 class="item-title">{{item.name}}</h3>
                     <span v-if="item.isDirector">导演</span>
                 </div>
@@ -58,9 +58,9 @@
             },
             tags(){
                 let year = this.movieDetail.year;
-                console.log(this.movieDetail.genres)
-                //let tag = this.movieDetail.genres.join('/');
-                //return `${year}/${tag}`;
+                //console.log(this.movieDetail.genres)
+                let tag = this.movieDetail.genres.join('/');
+                return `${year}/${tag}`;
             },
             pubdate(){
                 let pubdate="";
@@ -79,7 +79,11 @@
                 }
                 return pubdate;
             },
+            durations() {
+                return this.movieDetail.durations[0];
+            },
             allCasts(){     //获取导演和演员的分组
+                
                 let removeIndex = [];
                 this.movieDetail.directors.forEach((item,index)=> {
                     item.isDirector = true;
@@ -96,11 +100,21 @@
                         removeIndex.push(index)
                     }
                 })
+                
                 for (let i = removeIndex.length; i > 0; i--) { // 移除信息不完全的演员
                     this.movieDetail.casts.splice(removeIndex[i - 1], 1);
                 }
+                //console.log(this.movieDetail.directors.concat(this.movieDetail.casts))
                 return this.movieDetail.directors.concat(this.movieDetail.casts)
-            }
+                
+            },
+            normalizeScore() { // 数位补零
+                let len = this.movieDetail.rating.average.toString().length;
+                if (len < 2) {
+                    return `${this.movieDetail.rating.average}.0`;
+                }
+                return this.movieDetail.rating.average;
+            },
         },
         components:{
             Star
@@ -148,10 +162,10 @@
                 box-shadow: 0px 0px 5px #ccc;
                 background-color: #f8f8f8;
                 span{
-                    font-size:@font-size-large;
+                    font-size:@font-size-small;
                     color:@color-text;
                     &.rating{
-                        font-size:@font-size-large;
+                        font-size:@font-size-small;
                         color:@color-text-f;
                     }
                 }
