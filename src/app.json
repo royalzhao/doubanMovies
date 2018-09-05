@@ -3,7 +3,9 @@
     "pages/index/main",
     "pages/rank/main",
     "pages/me/main",
-    "pages/movie_detail/main"
+    "pages/movie_detail/main",
+    "pages/review_detail/main",
+    "pages/all_discussion/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

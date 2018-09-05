@@ -92,3 +92,40 @@ export function getAllComments(id, start, count){
             })
     })
 }
+
+// 搜索
+export function movieSearch(query, start, count) { // top250
+    const url = '/v2/movie/search';
+    const data = Object.assign({}, commonParams, {
+      q: query,
+      start,
+      count
+    });
+    return new Promise((resolve,reject)=>{
+        ajax.get(url,data)
+            .then(response => {
+                resolve(response.data)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+  }
+  
+  export function tagSearch(tag, start, count) { // top250
+    const url = '/v2/movie/search';
+    const data = Object.assign({}, commonParams, {
+      tag,
+      start,
+      count
+    });
+    return new Promise((resolve,reject)=>{
+        ajax.get(url,data)
+            .then(response => {
+                resolve(response.data)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+  }

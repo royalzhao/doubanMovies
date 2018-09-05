@@ -2,74 +2,78 @@
     <div class="review-wrapper">
         
         <div class="review-detail">
-        <div class="scroll-wrapper">
-            <div class="review-content" v-if="reviewDetail.author">
-                <h1 class="title">{{reviewDetail.title}}</h1>
-                <div class="author">
-                    <div class="avatar">
-                    <img :src="reviewDetail.author.avatar" alt="" height="36" width="36">
+            <div class="scroll-wrapper">
+                <div class="review-content" v-if="reviewDetail.author">
+                    <h1 class="title">{{reviewDetail.title}}</h1>
+                    <div class="author">
+                        <div class="avatar">
+                        <img :src="reviewDetail.author.avatar" alt="" height="36" width="36">
+                        </div>
+                        <div class="info">
+                        <h2><span class="name">{{reviewDetail.author.name}}</span>的影评</h2>
+                        <span class="date">{{reviewDetail.created_at.split(' ')[0]}}</span>
+                        <star :size="24" :score="reviewDetail.rating.value*2"></star>
+                        </div>
                     </div>
-                    <div class="info">
-                    <h2><span class="name">{{reviewDetail.author.name}}</span>的影评</h2>
-                    <span class="date">{{reviewDetail.created_at.split(' ')[0]}}</span>
-                    <star :size="24" :score="reviewDetail.rating.value*2"></star>
+                    <p class="desc" v-html="reviewDetail.content"></p>
+                    <div class="copyright">
+                        本文版权归 {{reviewDetail.author.name}} 所有，任何形式转载请联系作者
                     </div>
-                </div>
-                <p class="desc" v-html="reviewDetail.content"></p>
-                <div class="copyright">
-                    本文版权归 {{reviewDetail.author.name}} 所有，任何形式转载请联系作者
-                </div>
-                <div class="end">
-                    <div class="line"></div>
-                    <span class="text">THE END</span>
-                </div>
-                <div class="useful">
-                    <div class="use">
-                    有用({{reviewDetail.useful_count}})
+                    <div class="end">
+                        <div class="line"></div>
+                        <span class="text">THE END</span>
                     </div>
-                    <div class="no-use">
-                    没用({{reviewDetail.useless_count}})
+                    <div class="useful">
+                        <div class="use">
+                        有用({{reviewDetail.useful_count}})
+                        </div>
+                        <div class="no-use">
+                        没用({{reviewDetail.useless_count}})
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <loadmore :fullScreen="true" v-if="!reviewDetail.author"></loadmore>
+            <loadmore :fullScreen="true" v-if="!reviewDetail.author"></loadmore>
         </div>
     </div>
 </template>
 
 <script>
-import loadmore from "@/components/loadmore"
-import Star from '@/star/star';
-import { getMovieReview } from '../../api/movie-detail';
+import Loadmore from "@/components/loadmore"
+import Star from '@/components/star/star';
+import { getMovieReview } from '@/api/api'
 
 export default {
     data() {
-    return {
-        reviewDetail: {},
-        fullScreen: true
-    };
+        return {
+            reviewDetail: {},
+            fullScreen: true,
+            currentReviewId:null
+        };
     },
-    created() {
+    mounted(){
+        const id = this.$root.$mp.query.id;
+        if (!id) {
+            return wx.navigateBack()
+        }
+        this.currentReviewId = id
+        
         this._getMovieReview(this.currentReviewId);
     },
     computed: {
-        ...mapGetters([
-            'currentReviewId'
-        ])
+        // ...mapGetters([
+        //     'currentReviewId'
+        // ])
     },
     methods: {
         back() {
             this.$router.back();
         },
         _getMovieReview(id) {
-            if (!this.currentReviewId) { // 当前页面浏览器刷新跳转回主页
-            this.$router.push('/movie-show');
-            return;
-            }
-            getMovieReview(id).then((res) => {
-            this.reviewDetail = res;
+           getMovieReview(id).then((res) => {
+                this.reviewDetail = res;
             });
+            wx.setNavigationBarTitle({ title: "影评" }) 
         }
     },
     components: {
@@ -83,16 +87,9 @@ export default {
 @import url("~@/styles/color.less");
 
 .review-detail{
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 150;
-    overflow: hidden;
     background-color: @color-background;
     .review-content{
-        padding: 70px 20px 40px 20px;
+        padding: 0px 20px 40px 20px;
         .title{;
             font-size: @font-size-large-x;
             color: @color-text-f;
@@ -107,6 +104,8 @@ export default {
                 width: 36px;
                 img{
                     border-radius: 50%;
+                    width: 25px;
+                    height: 25px;
                 }
                     
                 .info{
@@ -130,11 +129,10 @@ export default {
             }
         }
             
-        
-            
         .desc{
             margin-top: 30px;
             color: @color-text-f;
+            font-size: @font-size-medium;
             line-height: 25px;
             white-space: pre-wrap;
         }

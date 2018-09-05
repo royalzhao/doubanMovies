@@ -27,7 +27,7 @@
             v-if="movie.popular_reviews && currentIndex === 1"
             :reviews="movie.popular_reviews.slice(0,5)"
             :reviewNum="movie.reviews_count"
-            @needAllComments="needAllReviews"
+            @needAllReviews="needAllReviews"
             @selectReview="selectReview"
         >
         </movie-review>
@@ -111,7 +111,19 @@
                
             // }
             needAllComments(){
-                
+                wx.navigateTo({
+                    url: `/pages/all_discussion/main?type=comment&movieId=${this.id}`
+                })
+            },
+            needAllReviews(){
+                wx.navigateTo({
+                    url: `/pages/all_discussion/main?type=review&movieId=${this.id}`
+                })
+            },
+            selectReview(id){
+                wx.navigateTo({
+                    url: `/pages/review_detail/main?id=${id}`
+                })
             }
         },
         components:{

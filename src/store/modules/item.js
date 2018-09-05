@@ -12,7 +12,7 @@ const mutations = {
       state.movieDetails.unshift(data)
     }
     state.movie = data
-    console.log( state.movie)
+    //console.log( state.movie)
   },
   [ITEM_CLEAR_MOVIE]: (state) => {
     state.movie = {}
