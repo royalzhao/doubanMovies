@@ -5,12 +5,14 @@
     "pages/me/main",
     "pages/movie_detail/main",
     "pages/review_detail/main",
-    "pages/all_discussion/main"
+    "pages/all_discussion/main",
+    "pages/search/main"
+    
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "Hello电影",
     "navigationBarTextStyle": "black",
     "enablePullDownRefresh": true
   },

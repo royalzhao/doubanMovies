@@ -112,6 +112,7 @@ export function movieSearch(query, start, count) { // top250
     })
   }
   
+
   export function tagSearch(tag, start, count) { // top250
     const url = '/v2/movie/search';
     const data = Object.assign({}, commonParams, {
@@ -119,6 +120,66 @@ export function movieSearch(query, start, count) { // top250
       start,
       count
     });
+    return new Promise((resolve,reject)=>{
+        ajax.get(url,data)
+            .then(response => {
+                resolve(response.data)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+  }
+
+//   排行榜
+  export function top250Rank(start, count) { // top250
+    const url = '/v2/movie/top250';
+    const data = Object.assign({}, commonParams, {
+      start,
+      count
+    });
+    return new Promise((resolve,reject)=>{
+        ajax.get(url,data)
+            .then(response => {
+                resolve(response.data)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+  }
+  
+  export function usBoxRank() { // 北美票房
+    const url = '/v2/movie/us_box';
+    const data = Object.assign({}, commonParams);
+    return new Promise((resolve,reject)=>{
+        ajax.get(url,data)
+            .then(response => {
+                resolve(response.data)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+  }
+  
+  export function weeklyRank() { // 口碑榜
+    const url = '/v2/movie/weekly';
+    const data = Object.assign({}, commonParams);
+    return new Promise((resolve,reject)=>{
+        ajax.get(url,data)
+            .then(response => {
+                resolve(response.data)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+  }
+  
+  export function newMoviesRank() { // 新片榜
+    const url = '/v2/movie/new_movies';
+    const data = Object.assign({}, commonParams);
     return new Promise((resolve,reject)=>{
         ajax.get(url,data)
             .then(response => {

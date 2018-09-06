@@ -25,6 +25,8 @@
         methods:{
             back(){
                 wx.navigateBack();
+                this.query="";
+                this.$emit('back')
             }
 
         },
@@ -36,7 +38,7 @@
                     }
                     this.timer = setTimeout(()=>{
                         this.$emit('query',newQuery);
-                    },500)
+                    },1000)
                 }else{  // 标签搜索不需要节流
                     this.$emit('query', newQuery);
                 }
@@ -71,8 +73,10 @@
             color: @color-text-f;
             font-size: @font-size-medium;
             caret-color: @color-theme-f;
-            &::placeholder;
-            color: @color-text;
+            &::placeholder{
+                color: @color-text;
+            }
+            
         }
         .cancel{
             flex: 1;

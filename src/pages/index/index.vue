@@ -75,6 +75,11 @@ export default {
             url: `/pages/movie_detail/main?id=${movie.id}&name=${movie.title}`
         })
       },
+      goSearch(){
+        wx.navigateTo({
+            url: `/pages/search/main`
+        })
+      },
       getMovies(){
         if (this.currentIndex === 0) {
           getMovie(this.in_theaters.start,this.in_theaters.count)
