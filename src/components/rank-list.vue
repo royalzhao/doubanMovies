@@ -1,7 +1,7 @@
 <template>
     <div class="rank-list">
         <ul>
-            <li v-for="(item,index) in rankItems" :key="index" class="rank-item" @click="selectItem(item,$event)" :class="{'compact': !needRank}">
+            <li v-for="(item,index) in rankItems" :key="index" class="rank-item" @click="selectItem(item)" :class="{'compact': !needRank}">
             <div class="rank-rating" v-show="needRank">
                 <div class="line"></div>
                 <span class="text">{{page * 50 + (index + 1)}}</span>
@@ -51,6 +51,11 @@
         data(){
             return{
                 showScore: true
+            }
+        },
+        methods:{
+            selectItem(movie){
+                this.$emit('select', movie);
             }
         },
         components: {
@@ -130,6 +135,10 @@
             .info-img{
                 flex: 70px 0 0;
                 margin-right: 10px;
+                img{
+                    width:70px;
+                    height: 100px;
+                }
             }
             .info-desc{
                 flex: 1;

@@ -115,7 +115,9 @@ export default {
       })
     },
     select(type){
-      console.log(type)
+      wx.navigateTo({
+          url: `/pages/rank_detail/main?type=${type}`
+      })
     }
   }
 }

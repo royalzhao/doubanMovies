@@ -2,11 +2,11 @@
   "pages": [
     "pages/index/main",
     "pages/rank/main",
-    "pages/me/main",
     "pages/movie_detail/main",
     "pages/review_detail/main",
     "pages/all_discussion/main",
-    "pages/search/main"
+    "pages/search/main",
+    "pages/rank_detail/main"
     
   ],
   "window": {
@@ -34,12 +34,6 @@
         "iconPath": "static/img/rank.png",
         "selectedIconPath": "static/img/rank-select.png",
         "text": "排行"
-      },
-      {
-        "pagePath": "pages/me/main",
-        "iconPath": "static/img/me.png",
-        "selectedIconPath": "static/img/me-select.png",
-        "text": "我的"
       }
      
     ]
