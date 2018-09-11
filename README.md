@@ -1,6 +1,22 @@
-# recentmovie
 
-> A Mpvue project
+## 电影速查  
+基于mpvue 开发的一款小程序  
+使用豆瓣api进行开发
+
+## 主要功能  
+* 最近热映电影展示
+* 即将上映电影展示
+* 电影搜索
+* 显示电影详细信息及影评
+* 电影各类排行榜
+
+## 效果展示
+![](https://i.imgur.com/3lOTutb.gif)
+![](https://i.imgur.com/OgwKSz5.gif)
+![](https://i.imgur.com/zzUZipU.gif)
+## 线上体验  
+![](https://i.imgur.com/6vgTQ0z.jpg)
+
 
 ## Build Setup
 
@@ -14,8 +30,6 @@ npm run dev
 # build for production with minification
 npm run build
 
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+

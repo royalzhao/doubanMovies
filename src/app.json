@@ -12,7 +12,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "Hello电影",
+    "navigationBarTitleText": "电影速查",
     "navigationBarTextStyle": "black",
     "enablePullDownRefresh": true
   },
